@@ -20,8 +20,17 @@
 ###############################################################################
 __author__ = 'Maciej Kamiński Politechnika Wrocławska'
 
+import os,sys
+from PyQt5 import uic
 
 def classFactory(iface):
     """invoke plugin"""
-    from MongoConnector.plugin import MongoConnectorPlugin
-    return MongoConnectorPlugin(iface)
+    from Vincula.plugin import VinculaPlugin
+    obj=uic.loadUi(\
+			os.path.join(\
+				os.path.dirname(__file__),
+				'main_window.ui'
+			)
+		)
+    obj.show()
+    return VinculaPlugin(iface)
