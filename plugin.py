@@ -23,6 +23,7 @@ __author__ = 'Maciej Kamiński Politechnika Wrocławska'
 from os import path
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtGui import QIcon
+from PyQt5 import uic
 from .vincula import Vincula
 
 class VinculaPlugin(object):
@@ -62,3 +63,12 @@ class VinculaPlugin(object):
         for action in self.menu_actions:
             self.iface.removePluginMenu(self.plugin_menu_entry,action)
             self.iface.removeToolBarIcon(action)
+
+    def ui_loader(self,*ui_name):
+        """
+        Returns object created based on provided .ui filename.
+        In addition subdirectory can be stated:
+        ui_loader('form.ui')
+        ui_loader('formsdir','form.ui')
+        """
+        return uic.loadUi(path.join(self.plugin_path,*ui_name))

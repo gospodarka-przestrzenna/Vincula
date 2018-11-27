@@ -22,7 +22,6 @@ __author__ = 'Maciej Kamiński Politechnika Wrocławska'
 import os
 from PyQt5.QtWidgets import QAction,QMessageBox,QApplication
 from PyQt5.QtCore import Qt, QBasicTimer
-from PyQt5 import uic
 #from .maindialog import MongoConnectorDialog
 #from .qgsmongolayer import QgsMongoLayer
 from qgis.core import *
@@ -37,11 +36,13 @@ class Vincula(QAction):
 			plugin.qicon,
 			"Connect",
 			plugin.iface.mainWindow()
-	)
+	           )
         self.triggered.connect(self.run)
 
         self.plugin=plugin
         self.iface=plugin.iface
+        # dailog cannot be set in function variable (it is GCed)
+        self.dlg=None
         #self.dlg=MongoConnectorDialog()
         #self.mongo_client=MongoClient(serverSelectionTimeoutMS=2000)
 
@@ -56,12 +57,15 @@ class Vincula(QAction):
         """
         Just show/dock Widget
         """
-        A, B = uic.loadUiType(os.path.join(os.path.dirname(__file__), 'main_window1.ui'))
-        dlg=uic.loadUi(os.path.join(self.plugin.plugin_path,'main_window1.ui'))
+        #A, B = uic.loadUiType(os.path.join(os.path.dirname(__file__), 'main_window1.ui'))
+        self.dlg=self.plugin.ui_loader('main_window.ui')
+        #print(type(self.dlg),A,B)
         #self.iface.addDockWidget(Qt.LeftDockWidgetArea,self.dlg)
-        self.iface.addDockWidget(Qt.LeftDockWidgetArea,dlg)
-        dlg.show()
-        dlg.load_items()
-        print(type(dlg),A,B)
-        print(dir(dlg))
-        #self.iface.addWindow(dlg)
+        #self.iface.addDockWidget(Qt.LeftDockWidgetArea,self.dlg)
+        self.dlg.pushButton_2.clicked.connect(self.clicked)
+        #print(dir(dlg))
+        #self.iface.addWindow(self.dlg)
+        self.dlg.show()
+
+    def clicked(self):
+        print("clicked")
