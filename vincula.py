@@ -24,6 +24,7 @@ from PyQt5.QtWidgets import QAction,QMessageBox,QApplication
 from PyQt5.QtCore import Qt, QBasicTimer
 #from .maindialog import MongoConnectorDialog
 #from .qgsmongolayer import QgsMongoLayer
+from qgis.gui import QgsMapLayerComboBox
 from qgis.core import *
 #from pymongo import MongoClient
 
@@ -62,10 +63,26 @@ class Vincula(QAction):
         #print(type(self.dlg),A,B)
         #self.iface.addDockWidget(Qt.LeftDockWidgetArea,self.dlg)
         #self.iface.addDockWidget(Qt.LeftDockWidgetArea,self.dlg)
-        self.dlg.pushButton_2.clicked.connect(self.clicked)
+        self.dlg.guziczek.clicked.connect(self.clicked)
+        self.dlg.warstwaBox.activated[str].connect(self.combo_Box_2)
+        self.dlg.warstwaBox.addItems(["warstwa1", "warstwa2", "warstwa3", "i żeby tradycji stało się zadość - dupa"])
+        self.dlg.warstwaBox.currentIndexChanged.connect(self.selectionchange)
         #print(dir(dlg))
         #self.iface.addWindow(self.dlg)
         self.dlg.show()
 
     def clicked(self):
         print("clicked")
+
+    def combo_Box_2(self,text):
+        self.dlg.kolumnaBox.setEnabled(False)
+        self.dlg.kolumnaBox.clear()
+        self.dlg.comboBox_3.setEnabled(False)
+        self.dlg.comboBox_3.clear()
+        self.dlg.warstwaBox.setEnabled(True)
+
+    def selectionchange(self, i):
+        print("Items in the list are :")
+        for count in range(self.dlg.warstwaBox.count()):
+            print(self.dlg.warstwaBox.itemText(count))
+        print("Current index",i,"selection changed ",self.dlg.warstwaBox.currentText())
