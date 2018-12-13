@@ -26,11 +26,5 @@ from PyQt5 import uic
 def classFactory(iface):
     """invoke plugin"""
     from Vincula.plugin import VinculaPlugin
-    obj=uic.loadUi(\
-			os.path.join(\
-				os.path.dirname(__file__),
-				'main_window.ui'
-			)
-		)
-    obj.show()
+
     return VinculaPlugin(iface)

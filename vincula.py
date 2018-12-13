@@ -59,17 +59,19 @@ class Vincula(QAction):
         Just show/dock Widget
         """
         #A, B = uic.loadUiType(os.path.join(os.path.dirname(__file__), 'main_window1.ui'))
-        self.dlg=self.plugin.ui_loader('main_window.ui')
+        self.dlg=self.plugin.ui_loader('main_window1.ui')
         #print(type(self.dlg),A,B)
-        #self.iface.addDockWidget(Qt.LeftDockWidgetArea,self.dlg)
-        #self.iface.addDockWidget(Qt.LeftDockWidgetArea,self.dlg)
+
+        #self.dlg.show()
         self.dlg.guziczek.clicked.connect(self.clicked)
-        self.dlg.warstwaBox.activated[str].connect(self.combo_Box_2)
-        self.dlg.warstwaBox.addItems(["warstwa1", "warstwa2", "warstwa3", "i żeby tradycji stało się zadość - dupa"])
-        self.dlg.warstwaBox.currentIndexChanged.connect(self.selectionchange)
+        self.iface.addDockWidget(Qt.LeftDockWidgetArea,self.dlg)
+        #self.dlg.warstwaBox.activated[str].connect(self.combo_Box_2)
+        #self.dlg.warstwaBox.addItems(["warstwa1", "warstwa2", "warstwa3", "i żeby tradycji stało się zadość - dupa"])
+        #self.dlg.warstwaBox.currentIndexChanged.connect(self.selectionchange)
+        self.dlg.LayerComboQ.layerChanged.connect(self.layer_change)
         #print(dir(dlg))
         #self.iface.addWindow(self.dlg)
-        self.dlg.show()
+
 
     def clicked(self):
         print("clicked")
@@ -86,3 +88,16 @@ class Vincula(QAction):
         for count in range(self.dlg.warstwaBox.count()):
             print(self.dlg.warstwaBox.itemText(count))
         print("Current index",i,"selection changed ",self.dlg.warstwaBox.currentText())
+
+    def layer_change(self):
+        print(self.dlg.LayerComboQ.currentText())
+        #print(self.dlg.LayerComboQ.currentLayer())
+        fid=1
+        #for feature in
+        iterator=self.dlg.LayerComboQ.currentLayer().getFeatures(QgsFeatureRequest().setFilterFid(fid))
+        feature=next(iterator)
+        attrs = feature.attributes()
+        geom=feature.geometry().asGeometryCollection()
+        geom_str=str(geom[0]).split(" ((")[1][:-3].split(", ")
+        print(geom_str)
+        #self.dlg.QwarstwaBox.setLayer()

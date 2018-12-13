@@ -71,4 +71,5 @@ class VinculaPlugin(object):
         ui_loader('form.ui')
         ui_loader('formsdir','form.ui')
         """
+        #print(path.join(self.plugin_path,*ui_name))
         return uic.loadUi(path.join(self.plugin_path,*ui_name))
